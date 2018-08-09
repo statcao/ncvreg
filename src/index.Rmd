@@ -68,7 +68,7 @@ In this case, it would appear that `lcavol`, `svi`, and `lweight` are clearly as
 Typically, one would carry out cross-validation for the purposes of assessing the predictive accuracy of the model at various values of $\lambda$:
 
 ```{r cvplot, h=4, w=6, cache=TRUE}
-cvfit <- cv.ncvreg(Prostate$X, Prostate$y)
+cvfit <- cv.ncvreg(X, y)
 plot(cvfit)
 ```
 
@@ -81,7 +81,7 @@ coef(cvfit)
 Predicted values can be obtained via `predict`, which has a number of options:
 
 ```{r predict}
-predict(cvfit, X=head(Prostate$X))
+predict(cvfit, X=head(X))
 predict(cvfit, type="nvars")  # Number of nonzero coefficients
 ```
 

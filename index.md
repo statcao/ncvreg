@@ -94,7 +94,7 @@ Typically, one would carry out cross-validation for the purposes of assessing th
 
 
 ```r
-cvfit <- cv.ncvreg(Prostate$X, Prostate$y)
+cvfit <- cv.ncvreg(X, y)
 plot(cvfit)
 ```
 
@@ -118,7 +118,7 @@ Predicted values can be obtained via `predict`, which has a number of options:
 
 
 ```r
-predict(cvfit, X=head(Prostate$X))
+predict(cvfit, X=head(X))
 ```
 
 ```
