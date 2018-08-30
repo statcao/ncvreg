@@ -3,4 +3,8 @@ pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
   getting-started: getting-started.html
+  inference-local: inference-local.html
+  inference-mfdr: inference-mfdr.html
+  models: models.html
+  penalties: penalties.html
 

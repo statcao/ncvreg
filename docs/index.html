@@ -42,28 +42,34 @@
      
   </a>
 </li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Learn more
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/getting-started.html">Getting started with ncvreg</a>
+      <a href="articles/models.html">Models</a>
+    </li>
+    <li>
+      <a href="articles/penalties.html">Penalties</a>
+    </li>
+    <li>
+      <a href="articles/inference-local.html">Inference: Local mfdr</a>
+    </li>
+    <li>
+      <a href="articles/inference-mfdr.html">Inference: Marginal false discovery rates</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="reference/index.html">Function reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pbreheny/actor">
+  <a href="https://github.com/pbreheny/ncvreg">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -146,7 +152,7 @@
 <p>The value of <span class="math inline">\(\lambda\)</span> that minimizes the cross-validation error is given by <code>cvfit$lambda.min</code>, which in this case is 0.002. Applying <code>coef</code> to the output of <code>cv.ncvreg</code> returns the coefficients at that value of <span class="math inline">\(\lambda\)</span>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">coef</span>(cvfit)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#  (Intercept)       lcavol      lweight          age         lbph </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#  0.181560845  0.564341280  0.622019788 -0.021248185  0.096712522 </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#  0.181560846  0.564341280  0.622019788 -0.021248185  0.096712522 </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#          svi          lcp      gleason        pgg45 </span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#  0.761673402 -0.106050939  0.049227934  0.004457512</span></a></code></pre></div>
 <p>Predicted values can be obtained via <code>predict</code>, which has a number of options:</p>
@@ -154,7 +160,7 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#         1         2         3         4         5         6 </span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># 0.8229078 0.7612550 0.4416131 0.6199877 1.7315458 0.8434007</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">predict</span>(cvfit, <span class="dt">type=</span><span class="st">"nvars"</span>)  <span class="co"># Number of nonzero coefficients</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># 0.00158 </span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># 0.00224 </span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#       8</span></a></code></pre></div>
 <p>Note that the original fit (to the full data set) is returned as <code>cvfit$fit</code>; it is not necessary to call both <code>ncvreg</code> and <code>cv.ncvreg</code> to analyze a data set. For example, <code>plot(cvfit$fit)</code> will produce the same coefficient path plot as <code>plot(fit)</code> above.</p>
 </div>

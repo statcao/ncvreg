@@ -42,34 +42,31 @@
      
   </a>
 </li>
+<li>
+  <a href="../reference/index.html">Reference</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Learn more
+    Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/getting-started.html">Getting started with ncvreg</a>
     </li>
     <li>
-      <a href="../articles/penalties.html">Penalties</a>
-    </li>
-    <li>
-      <a href="../articles/inference-local.html">Inference: Local mfdr</a>
-    </li>
-    <li>
-      <a href="../articles/inference-mfdr.html">Inference: Marginal false discovery rates</a>
+      <a href="../articles/inference.html">Getting started with ncvreg</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../reference/index.html">Function reference</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/pbreheny/ncvreg">
+  <a href="https://github.com/pbreheny/actor">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -90,8 +87,8 @@
                         <h4 class="author">Patrick Breheny</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/pbreheny/ncvreg/blob/master/vignettes/getting-started.rmd"><code>vignettes/getting-started.rmd</code></a></small>
-      <div class="hidden name"><code>getting-started.rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/pbreheny/ncvreg/blob/master/vignettes/inference.rmd"><code>vignettes/inference.rmd</code></a></small>
+      <div class="hidden name"><code>inference.rmd</code></div>
 
     </div>
 
@@ -123,7 +120,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ncvreg.html">ncvreg</a></span>(X, y)</a></code></pre></div>
 <p>The default penalty here is the minimax concave penalty (MCP), but SCAD and lasso penalties are also available. This produces a path of coefficients, which we can plot with</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">plot</span>(fit)</a></code></pre></div>
-<p><img src="getting-started_files/figure-html/plot-1.png" width="480"></p>
+<p><img src="inference_files/figure-html/plot-1.png" width="480"></p>
 <p>Notice that variables enter the model one at a time, and that at any given value of <span class="math inline">\(\lambda\)</span>, several coefficients are zero. To see what the coefficients are, we could use the <code>coef</code> function:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">coef</span>(fit, <span class="dt">lambda=</span><span class="fl">0.05</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># (Intercept)      lcavol     lweight         age        lbph         svi </span></a>
@@ -152,20 +149,20 @@
 <p>Typically, one would carry out cross-validation for the purposes of assessing the predictive accuracy of the model at various values of <span class="math inline">\(\lambda\)</span>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
-<p><img src="getting-started_files/figure-html/cvplot-1.png" width="480"></p>
-<p>The value of <span class="math inline">\(\lambda\)</span> that minimizes the cross-validation error is given by <code>cvfit$lambda.min</code>, which in this case is 0.003. Applying <code>coef</code> to the output of <code>cv.ncvreg</code> returns the coefficients at that value of <span class="math inline">\(\lambda\)</span>:</p>
+<p><img src="inference_files/figure-html/cvplot-1.png" width="480"></p>
+<p>The value of <span class="math inline">\(\lambda\)</span> that minimizes the cross-validation error is given by <code>cvfit$lambda.min</code>, which in this case is 0.017. Applying <code>coef</code> to the output of <code>cv.ncvreg</code> returns the coefficients at that value of <span class="math inline">\(\lambda\)</span>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">coef</span>(cvfit)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#  (Intercept)       lcavol      lweight          age         lbph </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#  0.181560848  0.564341280  0.622019788 -0.021248185  0.096712522 </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#  0.494154801  0.569546027  0.614419811 -0.020913467  0.097352536 </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#          svi          lcp      gleason        pgg45 </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#  0.761673401 -0.106050938  0.049227934  0.004457512</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#  0.752397339 -0.104959403  0.000000000  0.005324465</span></a></code></pre></div>
 <p>Predicted values can be obtained via <code>predict</code>, which has a number of options:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">predict</span>(cvfit, <span class="dt">X=</span><span class="kw">head</span>(X))</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#         1         2         3         4         5         6 </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># 0.8229078 0.7612550 0.4416131 0.6199877 1.7315458 0.8434007</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># 0.8304040 0.7650906 0.4262072 0.6230117 1.7449492 0.8449595</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">predict</span>(cvfit, <span class="dt">type=</span><span class="st">"nvars"</span>)  <span class="co"># Number of nonzero coefficients</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># 0.00276 </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#       8</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># 0.01695 </span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#       7</span></a></code></pre></div>
 <p>Note that the original fit (to the full data set) is returned as <code>cvfit$fit</code>; it is not necessary to call both <code>ncvreg</code> and <code>cv.ncvreg</code> to analyze a data set. For example, <code>plot(cvfit$fit)</code> will produce the same coefficient path plot as <code>plot(fit)</code> above.</p>
 </div>
   </div>
