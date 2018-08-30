@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Models">
+<script src="../extra.js"></script><meta property="og:title" content="Models">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.11.0.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.1</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@
   </ul>
 </li>
 <li>
-  <a href="../reference/index.html">Function reference</a>
+  <a href="../reference/index.html">Functions</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -97,9 +97,62 @@
 
     
     
+<div style="text-align: center; font-size: 200%; font-weight: 700; margin: 20pt;">
+<i class="fa fa-wrench"></i> Under construction <i class="fa fa-wrench">
+</i>
+</div>
+<p><code>ncvreg</code> fits models that fall into the penalized likelihood framework. Rather than estimating <span class="math inline">\(\bb\)</span> by maximizing the likelihood, in this framework we estimate <span class="math inline">\(\bb\)</span> by minimizing the objective function <span class="math display">\[
+Q(\bb|\X, \y) = L(\bb|\X,\y) + P_\lam(\bb),
+\]</span> where <span class="math inline">\(L(\bb|\X,\y)\)</span> is the loss (typically, the negative log-likelihood), <span class="math inline">\(P_\lam(\bb)\)</span> is the penalty, and <span class="math inline">\(\lam\)</span> is a regularization parameter that controls the tradeoff between the two components. This article describes the different loss models available in <code>ncvreg</code>; see <a href="penalties.html">penalties</a> for more information on the different penalties available.</p>
 <div id="gaussian-linear-regression" class="section level1">
 <h1 class="hasAnchor">
 <a href="#gaussian-linear-regression" class="anchor"></a>Gaussian (linear regression)</h1>
+<p>Here the loss function is simply the squared error loss: <span class="math display">\[
+L(\bb|\X,\y) = \norm{\y-\X\bb}_2^2
+\]</span> this loss is the negative log-likelihood if the outcome <span class="math inline">\(\y\)</span> follows a normal distribution with constant variance and mean given by <span class="math inline">\(\X\bb\)</span>.</p>
+<p>In the <code>Prostate</code> data packaged with <code>ncvreg</code>, the response is the prostate specific antigen (PSA), measured on the log scale, and follows an approximate normal distribution; see <code><a href="../reference/Prostate.html">?Prostate</a></code> for more information on the data set. Loading this data set into R,</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span>(Prostate)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">X &lt;-<span class="st"> </span>Prostate<span class="op">$</span>X</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">y &lt;-<span class="st"> </span>Prostate<span class="op">$</span>y</a></code></pre></div>
+<p>Fit the model (default is linear regression with MCP penalty):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ncvreg.html">ncvreg</a></span>(X, y)</a></code></pre></div>
+<p>A solution path:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">plot</span>(fit)</a></code></pre></div>
+<p><img src="models_files/figure-html/fit-linear-1.png" width="480"></p>
+<p>And a summary:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.02</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># At lambda=0.0200:</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 7</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 6.22</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#   mFDR: 0.888</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#   (local) Expected nonzero coefficients: 2.05</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#   (local) Overall mfdr (7 features)    : 0.293</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># </span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#          Estimate      z       mfdr</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co"># lcavol   0.569546  9.556    &lt; 1e-04</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co"># svi      0.752397  4.434 0.00027421</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># lweight  0.614420  3.747 0.00388256</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># pgg45    0.005324  2.138 0.39326548</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co"># age     -0.020913 -2.217 0.49946659</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co"># lbph     0.097353  2.011 0.51360534</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co"># lcp     -0.104959 -2.089 0.64077439</span></a></code></pre></div>
+<p>Carry out cross-validation:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a></code></pre></div>
+<p>Cross-validation plot:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
+<p><img src="models_files/figure-html/cvfit-linear-1.png" width="480"></p>
+<p>And a summary:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">summary</span>(cvfit)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># At minimum cross-validation error (lambda=0.0904):</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 3</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#   Cross-validation error (deviance): 0.54</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#   R-squared: 0.59</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#   Signal-to-noise ratio: 1.46</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#   Scale estimate (sigma): 0.733</span></a></code></pre></div>
 </div>
 <div id="binomial-logistic-regression" class="section level1">
 <h1 class="hasAnchor">
