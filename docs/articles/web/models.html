@@ -8,9 +8,9 @@
 <title>Models • ncvreg</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<script src="../extra.js"></script><meta property="og:title" content="Models">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<script src="../../pkgdown.js"></script><link href="../../extra.css" rel="stylesheet">
+<script src="../../extra.js"></script><meta property="og:title" content="Models">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -29,7 +29,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">ncvreg</a>
+        <a class="navbar-link" href="../../index.html">ncvreg</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.1</span>
       </span>
     </div>
@@ -37,7 +37,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
+  <a href="../../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -50,21 +50,21 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../../articles/web/models.html">Models</a>
     </li>
     <li>
-      <a href="../articles/penalties.html">Penalties</a>
+      <a href="../../articles/web/penalties.html">Penalties</a>
     </li>
     <li>
-      <a href="../articles/inference-local.html">Inference: Local mfdr</a>
+      <a href="../../articles/web/inference-local.html">Inference: Local mfdr</a>
     </li>
     <li>
-      <a href="../articles/inference-mfdr.html">Inference: Marginal false discovery rates</a>
+      <a href="../../articles/web/inference-mfdr.html">Inference: Marginal false discovery rates</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../reference/index.html">Functions</a>
+  <a href="../../reference/index.html">Functions</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -90,7 +90,7 @@
                         <h4 class="author">Patrick Breheny</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/pbreheny/ncvreg/blob/master/vignettes/models.rmd"><code>vignettes/models.rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pbreheny/ncvreg/blob/master/vignettes/web/models.rmd"><code>vignettes/web/models.rmd</code></a></small>
       <div class="hidden name"><code>models.rmd</code></div>
 
     </div>
@@ -110,45 +110,51 @@ Q(\bb|\X, \y) = L(\bb|\X,\y) + P_\lam(\bb),
 <p>Here the loss function is simply the squared error loss: <span class="math display">\[
 L(\bb|\X,\y) = \norm{\y-\X\bb}_2^2
 \]</span> this loss is the negative log-likelihood if the outcome <span class="math inline">\(\y\)</span> follows a normal distribution with constant variance and mean given by <span class="math inline">\(\X\bb\)</span>.</p>
-<p>In the <code>Prostate</code> data packaged with <code>ncvreg</code>, the response is the prostate specific antigen (PSA), measured on the log scale, and follows an approximate normal distribution; see <code><a href="../reference/Prostate.html">?Prostate</a></code> for more information on the data set. Loading this data set into R,</p>
+<p>In the <code>Prostate</code> data packaged with <code>ncvreg</code>, the response is the prostate specific antigen (PSA), measured on the log scale, and follows an approximate normal distribution; see <code><a href="../../reference/Prostate.html">?Prostate</a></code> for more information on the data set. Loading this data set into R,</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span>(Prostate)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">X &lt;-<span class="st"> </span>Prostate<span class="op">$</span>X</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">y &lt;-<span class="st"> </span>Prostate<span class="op">$</span>y</a></code></pre></div>
-<p>Fit the model (default is linear regression with MCP penalty):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ncvreg.html">ncvreg</a></span>(X, y)</a></code></pre></div>
-<p>A solution path:</p>
+<p>By default, <code>ncvreg</code> fits a linear regression model with a minimax concave penalty (MCP):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/ncvreg.html">ncvreg</a></span>(X, y)</a></code></pre></div>
+<p>This produces a path of coefficient estimates, which we can plot with</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">plot</span>(fit)</a></code></pre></div>
 <p><img src="models_files/figure-html/fit-linear-1.png" width="480"></p>
-<p>And a summary:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.02</span>)</a>
+<p>Although the least squares loss function is convex, the MCP penalty is not. The resulting objective function, therefore, may or may not be convex. <code>ncvreg</code>uses a local convexity diagnostic, as described in <a href="http://myweb.uiowa.edu/pbreheny/pdf/Breheny2011.pdf">Breheny and Huang (2011)</a>, to identify the regions of the coefficient path where the objective function is not convex; this is the gray shaded region in the plot. Users should be aware that solutions in this region may only be local optima of the objective function, not global ones.</p>
+<p>Post-selection inference is available using the <code>summary</code> method:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.05</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># At lambda=0.0200:</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># At lambda=0.0500:</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 7</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 6.22</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#   mFDR: 0.888</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#   (local) Expected nonzero coefficients: 2.05</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#   (local) Overall mfdr (7 features)    : 0.293</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#          Estimate      z       mfdr</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co"># lcavol   0.569546  9.556    &lt; 1e-04</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co"># svi      0.752397  4.434 0.00027421</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># lweight  0.614420  3.747 0.00388256</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># pgg45    0.005324  2.138 0.39326548</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co"># age     -0.020913 -2.217 0.49946659</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co"># lbph     0.097353  2.011 0.51360534</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co"># lcp     -0.104959 -2.089 0.64077439</span></a></code></pre></div>
-<p>Carry out cross-validation:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a></code></pre></div>
-<p>Cross-validation plot:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
-<p><img src="models_files/figure-html/cvfit-linear-1.png" width="480"></p>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#   Nonzero coefficients         : 6</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 2.51</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#   Average mfdr (6 features)    : 0.418</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#         Estimate      z      mfdr</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># lcavol   0.53179  8.880   &lt; 1e-04</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co"># svi      0.67256  3.945 0.0018967</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co"># lweight  0.60390  3.666 0.0050683</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co"># lbph     0.08875  1.928 0.4998035</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># age     -0.01531 -1.788 1.0000000</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># pgg45    0.00168  1.160 1.0000000</span></a></code></pre></div>
+<p>The local marginal false discovery rate (mfdr) is given for each of the selected features. Roughly, this corresponds to the probability that the given feature is marginally independent of the residuals at that value of <span class="math inline">\(\lam\)</span>. In this case, it would appear that <code>lcavol</code>, <code>svi</code>, and <code>lweight</code> are clearly associated with the response, even after adjusting for the other variables in the model, while <code>lbph</code>, <code>age</code>, and <code>pgg45</code> may be false positives selected simply by chance. For more information on <code>summary()</code> and its various options, see <a href="inference-local.html">here</a>.</p>
+<p>Typically, one would carry out cross-validation for the purposes of assessing the predictive accuracy of the model at various values of <span class="math inline">\(\lambda\)</span>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y, <span class="dt">h=</span><span class="dv">5</span>, <span class="dt">w=</span><span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
+<p><img src="models_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
+<p>There are some options here:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'cve'</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'snr'</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'scale'</span>)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'rsq'</span>)</a></code></pre></div>
+<p><img src="models_files/figure-html/unnamed-chunk-5-1.png" width="480"></p>
+<p>What to plot on the vertical axis. cve plots the cross-validation error (deviance); rsq plots an estimate of the fraction of the deviance explained by the model (R-squared); snr plots an estimate of the signal-to-noise ratio; scale plots, for family=“gaussian”, an estimate of the scale parameter (standard deviation); pred plots, for family=“binomial”, the estimated prediction error; all produces all of the above.</p>
 <p>And a summary:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">summary</span>(cvfit)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># At minimum cross-validation error (lambda=0.0904):</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># At minimum cross-validation error (lambda=0.0018):</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 3</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 8</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#   Cross-validation error (deviance): 0.54</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#   R-squared: 0.59</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#   Signal-to-noise ratio: 1.46</span></a>

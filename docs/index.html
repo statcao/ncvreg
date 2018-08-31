@@ -50,16 +50,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/models.html">Models</a>
+      <a href="articles/web/models.html">Models</a>
     </li>
     <li>
-      <a href="articles/penalties.html">Penalties</a>
+      <a href="articles/web/penalties.html">Penalties</a>
     </li>
     <li>
-      <a href="articles/inference-local.html">Inference: Local mfdr</a>
+      <a href="articles/web/inference-local.html">Inference: Local mfdr</a>
     </li>
     <li>
-      <a href="articles/inference-mfdr.html">Inference: Marginal false discovery rates</a>
+      <a href="articles/web/inference-mfdr.html">Inference: Marginal false discovery rates</a>
     </li>
   </ul>
 </li>
@@ -89,12 +89,11 @@
 
     
     
-<!-- DO NOT EDIT BY HAND; build from vignette/getting-started -->
 <div id="regularization-paths-for-scad-and-mcp-penalized-regression-models" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#regularization-paths-for-scad-and-mcp-penalized-regression-models" class="anchor"></a>Regularization Paths for SCAD and MCP Penalized Regression Models</h1></div>
 <p><code>ncvreg</code> is an R package for fitting regularization paths for linear regression, GLM, and Cox regression models using lasso or nonconvex penalties, in particular the minimax concave penalty (MCP) and smoothly clipped absolute deviation (SCAD) penalty, with options for additional L<sub>2</sub> penalties (the “elastic net” idea). Utilities for carrying out cross-validation as well as post-fitting visualization, summarization, inference, and prediction are also provided.</p>
-<p>This site focuses mainly on illustrating the usage and syntax of <code>visreg</code> as a way of providing online documentation. For more on the algorithms used by <code>ncvreg</code>, see the original article:</p>
+<p>This site focuses mainly on illustrating the usage and syntax of <code>ncvreg</code>. For more on the algorithms used by <code>ncvreg</code>, see the original article:</p>
 <ul>
 <li><a href="http://myweb.uiowa.edu/pbreheny/pdf/Breheny2011.pdf">Breheny P and Huang J (2011). Coordinate descent algorithms for nonconvex penalized regression, with applications to biological feature selection. <em>Annals of Applied Statistics</em>, 5: 232–253</a></li>
 </ul>
@@ -111,57 +110,55 @@
 <div id="brief-introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#brief-introduction" class="anchor"></a>Brief introduction</h2>
-<p><code>ncvreg</code> comes with a few example data sets; we’ll look at <code>Prostate</code>, which has 8 features and one continuous response, the PSA levels (on the log scale) from men about to undergo radical prostatectomy:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">data</span>(Prostate)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">X &lt;-<span class="st"> </span>Prostate<span class="op">$</span>X</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">y &lt;-<span class="st"> </span>Prostate<span class="op">$</span>y</a></code></pre></div>
-<p>To fit a penalized regression model to this data:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/ncvreg.html">ncvreg</a></span>(X, y)</a></code></pre></div>
-<p>The default penalty here is the minimax concave penalty (MCP), but SCAD and lasso penalties are also available. This produces a path of coefficients, which we can plot with</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">plot</span>(fit)</a></code></pre></div>
+<p>Given a design matrix <code>X</code> and response vector <code>y</code>, we can fit a penalized regression model via:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/ncvreg.html">ncvreg</a></span>(X, y)</a></code></pre></div>
+<p>By default, <code>ncvreg</code> fits a linear regression model with a minimax concave penalty (MCP). For more detail on other types of models available, see <a href="articles/web/models.html">here</a>. For more detail on other types of penalties available, see <a href="articles/web/penalties.html">here</a>.</p>
+<p>Fitting a penalized regression model produces a path of coefficients, which we can plot with</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">plot</span>(fit)</a></code></pre></div>
 <p><img src="index_files/figure-html/plot-1.png" width="480"></p>
 <p>Notice that variables enter the model one at a time, and that at any given value of <span class="math inline">\(\lambda\)</span>, several coefficients are zero. To see what the coefficients are, we could use the <code>coef</code> function:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">coef</span>(fit, <span class="dt">lambda=</span><span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># (Intercept)      lcavol     lweight         age        lbph         svi </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#  0.35121089  0.53178994  0.60389694 -0.01530917  0.08874563  0.67256096 </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#         lcp     gleason       pgg45 </span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#  0.00000000  0.00000000  0.00168038</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">coef</span>(fit, <span class="dt">lambda=</span><span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># (Intercept)      lcavol     lweight         age        lbph         svi </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#  0.35121089  0.53178994  0.60389694 -0.01530917  0.08874563  0.67256096 </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#         lcp     gleason       pgg45 </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#  0.00000000  0.00000000  0.00168038</span></a></code></pre></div>
 <p>The <code>summary</code> method can be used for post-selection inference:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># At lambda=0.0500:</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 6</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 3.85</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#   mFDR: 0.642</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#   (local) Expected nonzero coefficients: 2.51</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#   (local) Overall mfdr (6 features)    : 0.418</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co"># </span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#         Estimate      z      mfdr</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co"># lcavol   0.53179  8.880   &lt; 1e-04</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co"># svi      0.67256  3.945 0.0018967</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co"># lweight  0.60390  3.666 0.0050683</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co"># lbph     0.08875  1.928 0.4998035</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co"># age     -0.01531 -1.788 1.0000000</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co"># pgg45    0.00168  1.160 1.0000000</span></a></code></pre></div>
-<p>In this case, it would appear that <code>lcavol</code>, <code>svi</code>, and <code>lweight</code> are clearly associated with the response, even after adjusting for the other variables in the model, while <code>lbph</code>, <code>age</code>, and <code>pgg45</code> may be false positives included simply by chance.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># At lambda=0.0500:</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#   Nonzero coefficients         : 6</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 2.51</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#   Average mfdr (6 features)    : 0.418</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co"># </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#         Estimate      z      mfdr</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co"># lcavol   0.53179  8.880   &lt; 1e-04</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># svi      0.67256  3.945 0.0018967</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># lweight  0.60390  3.666 0.0050683</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># lbph     0.08875  1.928 0.4998035</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co"># age     -0.01531 -1.788 1.0000000</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># pgg45    0.00168  1.160 1.0000000</span></a></code></pre></div>
+<p>In this case, it would appear that <code>lcavol</code>, <code>svi</code>, and <code>lweight</code> are clearly associated with the response, even after adjusting for the other variables in the model, while <code>lbph</code>, <code>age</code>, and <code>pgg45</code> may be false positives selected simply by chance.</p>
 <p>Typically, one would carry out cross-validation for the purposes of assessing the predictive accuracy of the model at various values of <span class="math inline">\(\lambda\)</span>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
 <p><img src="index_files/figure-html/cvplot-1.png" width="480"></p>
-<p>The value of <span class="math inline">\(\lambda\)</span> that minimizes the cross-validation error is given by <code>cvfit$lambda.min</code>, which in this case is 0.001. Applying <code>coef</code> to the output of <code>cv.ncvreg</code> returns the coefficients at that value of <span class="math inline">\(\lambda\)</span>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">coef</span>(cvfit)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#  (Intercept)       lcavol      lweight          age         lbph </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#  0.181560845  0.564341280  0.622019788 -0.021248185  0.096712522 </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#          svi          lcp      gleason        pgg45 </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#  0.761673402 -0.106050939  0.049227934  0.004457512</span></a></code></pre></div>
+<p>The value of <span class="math inline">\(\lambda\)</span> that minimizes the cross-validation error is given by <code>cvfit$lambda.min</code>, which in this case is 0.028. Applying <code>coef</code> to the output of <code>cv.ncvreg</code> returns the coefficients at that value of <span class="math inline">\(\lambda\)</span>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">coef</span>(cvfit)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#  (Intercept)       lcavol      lweight          age         lbph </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#  0.494151714  0.569546490  0.614419845 -0.020913442  0.097352556 </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#          svi          lcp      gleason        pgg45 </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#  0.752400486 -0.104960299  0.000000000  0.005324462</span></a></code></pre></div>
 <p>Predicted values can be obtained via <code>predict</code>, which has a number of options:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">predict</span>(cvfit, <span class="dt">X=</span><span class="kw">head</span>(X))</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#         1         2         3         4         5         6 </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># 0.8229078 0.7612550 0.4416131 0.6199877 1.7315458 0.8434007</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">predict</span>(cvfit, <span class="dt">type=</span><span class="st">"nvars"</span>)  <span class="co"># Number of nonzero coefficients</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># 0.00084 </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#       8</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">predict</span>(cvfit, <span class="dt">X=</span><span class="kw">head</span>(X))     <span class="co"># Prediction of response for new observations</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#         1         2         3         4         5         6 </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># 0.8304032 0.7650898 0.4262070 0.6230109 1.7449493 0.8449584</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">predict</span>(cvfit, <span class="dt">type=</span><span class="st">"nvars"</span>)  <span class="co"># Number of nonzero coefficients</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co"># 0.02762 </span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#       7</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="kw">predict</span>(cvfit, <span class="dt">type=</span><span class="st">"vars"</span>)   <span class="co"># Identity of the nonzero coefficients</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#  lcavol lweight     age    lbph     svi     lcp   pgg45 </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#       1       2       3       4       5       6       8</span></a></code></pre></div>
 <p>Note that the original fit (to the full data set) is returned as <code>cvfit$fit</code>; it is not necessary to call both <code>ncvreg</code> and <code>cv.ncvreg</code> to analyze a data set. For example, <code>plot(cvfit$fit)</code> will produce the same coefficient path plot as <code>plot(fit)</code> above.</p>
 </div>
 </div>

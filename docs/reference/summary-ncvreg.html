@@ -84,16 +84,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/web/models.html">Models</a>
     </li>
     <li>
-      <a href="../articles/penalties.html">Penalties</a>
+      <a href="../articles/web/penalties.html">Penalties</a>
     </li>
     <li>
-      <a href="../articles/inference-local.html">Inference: Local mfdr</a>
+      <a href="../articles/web/inference-local.html">Inference: Local mfdr</a>
     </li>
     <li>
-      <a href="../articles/inference-mfdr.html">Inference: Marginal false discovery rates</a>
+      <a href="../articles/web/inference-mfdr.html">Inference: Marginal false discovery rates</a>
     </li>
   </ul>
 </li>
@@ -232,11 +232,9 @@
 <span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.08</span>)</div><div class='output co'>#&gt; MCP-penalized linear regression with n=97, p=8
 #&gt; At lambda=0.0800:
 #&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 5
-#&gt;   Expected nonzero coefficients: 2.15
-#&gt;   mFDR: 0.430
-#&gt;   (local) Expected nonzero coefficients: 2.01
-#&gt;   (local) Overall mfdr (5 features)    : 0.401
+#&gt;   Nonzero coefficients         : 5
+#&gt;   Expected nonzero coefficients: 2.01
+#&gt;   Average mfdr (5 features)    : 0.401
 #&gt; 
 #&gt;           Estimate      z      mfdr
 #&gt; lcavol   5.263e-01  8.618   &lt; 1e-04
@@ -250,11 +248,9 @@
 <span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.05</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
 #&gt; At lambda=0.0500:
 #&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 5
-#&gt;   Expected nonzero coefficients: 0.14
-#&gt;   mFDR: 0.027
-#&gt;   (local) Expected nonzero coefficients: 0.0414
-#&gt;   (local) Overall mfdr (5 features)    : 0.00828
+#&gt;   Nonzero coefficients         : 5
+#&gt;   Expected nonzero coefficients: 0.0414
+#&gt;   Average mfdr (5 features)    : 0.00828
 #&gt; 
 #&gt;         Estimate     z       mfdr
 #&gt; age     0.047479 6.645    &lt; 1e-04
@@ -267,29 +263,14 @@
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ncvsurv.html'>ncvsurv</a></span>(<span class='no'>Lung</span>$<span class='no'>X</span>, <span class='no'>Lung</span>$<span class='no'>y</span>)
 <span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.1</span>)</div><div class='output co'>#&gt; MCP-penalized Cox regression with n=137, p=9
 #&gt; At lambda=0.1000:
-#&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 5
-#&gt;   Expected nonzero coefficients: 1.88
-#&gt;   mFDR: 0.377
-#&gt;   (local) Expected nonzero coefficients: 2.32
-#&gt;   (local) Overall mfdr (5 features)    : 0.464
-#&gt; 
-#&gt;          Estimate      z     mfdr
-#&gt; karno    -0.03196 -6.352  &lt; 1e-04
-#&gt; squamous -0.64314 -3.120 0.045837
-#&gt; adeno     0.28017  2.051 0.457101
-#&gt; large    -0.20731 -1.799 0.819428
-#&gt; trt       0.03738  1.332 1.000000</div><div class='input'>
+#&gt; -------------------------------------------------</div><div class='output co'>#&gt; <span class='error'>Error in if (x$custom) {    cat("  Features satisfying criteria       : ", nrow(x$table),         "\n", sep = "")    cat("  Average mfdr among chosen features : ", formatC(mean(x$table$mfdr),         digits = 3), "\n", sep = "")} else {    cat("  Nonzero coefficients         : ", x$nvars, "\n", sep = "")    if (x$nvars &gt; 0) {        cat("  Expected nonzero coefficients: ", formatC(sum(x$table$mfdr),             digits = 3), "\n", sep = "")        space &lt;- substr("                                              ",             1, 5 - nchar(nrow(x$table)))        cat("  Average mfdr (", nrow(x$table), " features)",             space, ": ", formatC(mean(x$table$mfdr), digits = 3),             "\n", sep = "")    }}: argument is of length zero</span></div><div class='input'>
 <span class='co'># Options ------------------------------------------------------------</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ncvreg.html'>ncvreg</a></span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
 <span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.08</span>, <span class='kw'>number</span><span class='kw'>=</span><span class='fl'>3</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
 #&gt; At lambda=0.0800:
 #&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 4
-#&gt;   Expected nonzero coefficients: 0.00
-#&gt;   mFDR: 0.000
-#&gt;   (local) Expected nonzero coefficients: 0.00151
-#&gt;   (local) Overall mfdr (3 features)    : 0.000502
+#&gt;   Features satisfying criteria       : 3
+#&gt;   Average mfdr among chosen features : 0.000502
 #&gt; 
 #&gt;         Estimate     z      mfdr Selected
 #&gt; age     0.041921 7.771   &lt; 1e-04        *
@@ -297,11 +278,8 @@
 #&gt; ldl     0.009273 3.847 0.0014355        *</div><div class='input'><span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.08</span>, <span class='kw'>number</span><span class='kw'>=</span><span class='fl'>Inf</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
 #&gt; At lambda=0.0800:
 #&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 4
-#&gt;   Expected nonzero coefficients: 0.00
-#&gt;   mFDR: 0.000
-#&gt;   (local) Expected nonzero coefficients: 2.97
-#&gt;   (local) Overall mfdr (9 features)    : 0.33
+#&gt;   Features satisfying criteria       : 9
+#&gt;   Average mfdr among chosen features : 0.33
 #&gt; 
 #&gt;           Estimate      z      mfdr Selected
 #&gt; age       0.041921 7.7712   &lt; 1e-04        *
@@ -315,11 +293,8 @@
 #&gt; alcohol   0.000000 0.7807 1.0000000         </div><div class='input'><span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.08</span>, <span class='kw'>cutoff</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
 #&gt; At lambda=0.0800:
 #&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 4
-#&gt;   Expected nonzero coefficients: 0.00
-#&gt;   mFDR: 0.000
-#&gt;   (local) Expected nonzero coefficients: 0.969
-#&gt;   (local) Overall mfdr (7 features)    : 0.138
+#&gt;   Features satisfying criteria       : 7
+#&gt;   Average mfdr among chosen features : 0.138
 #&gt; 
 #&gt;           Estimate     z      mfdr Selected
 #&gt; age       0.041921 7.771   &lt; 1e-04        *
@@ -334,7 +309,10 @@
 <span class='fu'>summary</span>(<span class='no'>fit</span>, <span class='kw'>X</span><span class='kw'>=</span><span class='no'>Heart</span>$<span class='no'>X</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='fl'>0.08</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
 #&gt; At lambda=0.0800:
 #&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 4
+#&gt;   Nonzero coefficients         : 4
+#&gt;   Expected nonzero coefficients: 0.00329
+#&gt;   Average mfdr (4 features)    : 0.000823
+#&gt; 
 #&gt;         Estimate     z      mfdr
 #&gt; age     0.041921 7.771   &lt; 1e-04
 #&gt; famhist 0.277822 4.627   &lt; 1e-04
