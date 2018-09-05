@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
       </span>
     </div>
 
@@ -97,17 +97,13 @@
 
     
     
-<div style="text-align: center; font-size: 200%; font-weight: 700; margin: 20pt;">
-<i class="fa fa-wrench"></i> Under construction <i class="fa fa-wrench">
-</i>
-</div>
 <p><code>ncvreg</code> fits models that fall into the penalized likelihood framework. Rather than estimating <span class="math inline">\(\bb\)</span> by maximizing the likelihood, in this framework we estimate <span class="math inline">\(\bb\)</span> by minimizing the objective function <span class="math display">\[
-Q(\bb|\X, \y) = L(\bb|\X,\y) + P_\lam(\bb),
+Q(\bb|\X, \y) = \frac{1}{n}L(\bb|\X,\y) + P_\lam(\bb),
 \]</span> where <span class="math inline">\(L(\bb|\X,\y)\)</span> is the loss (typically, the negative log-likelihood), <span class="math inline">\(P_\lam(\bb)\)</span> is the penalty, and <span class="math inline">\(\lam\)</span> is a regularization parameter that controls the tradeoff between the two components. This article describes the different loss models available in <code>ncvreg</code>; see <a href="penalties.html">penalties</a> for more information on the different penalties available.</p>
 <div id="gaussian-linear-regression" class="section level1">
 <h1 class="hasAnchor">
 <a href="#gaussian-linear-regression" class="anchor"></a>Gaussian (linear regression)</h1>
-<p>Here the loss function is simply the squared error loss: <span class="math display">\[
+<p>In linear regression, the loss function is simply the squared error loss: <span class="math display">\[
 L(\bb|\X,\y) = \norm{\y-\X\bb}_2^2
 \]</span> this loss is the negative log-likelihood if the outcome <span class="math inline">\(\y\)</span> follows a normal distribution with constant variance and mean given by <span class="math inline">\(\X\bb\)</span>.</p>
 <p>In the <code>Prostate</code> data packaged with <code>ncvreg</code>, the response is the prostate specific antigen (PSA), measured on the log scale, and follows an approximate normal distribution; see <code><a href="../../reference/Prostate.html">?Prostate</a></code> for more information on the data set. Loading this data set into R,</p>
@@ -138,39 +134,132 @@ L(\bb|\X,\y) = \norm{\y-\X\bb}_2^2
 <a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># pgg45    0.00168  1.160 1.0000000</span></a></code></pre></div>
 <p>The local marginal false discovery rate (mfdr) is given for each of the selected features. Roughly, this corresponds to the probability that the given feature is marginally independent of the residuals at that value of <span class="math inline">\(\lam\)</span>. In this case, it would appear that <code>lcavol</code>, <code>svi</code>, and <code>lweight</code> are clearly associated with the response, even after adjusting for the other variables in the model, while <code>lbph</code>, <code>age</code>, and <code>pgg45</code> may be false positives selected simply by chance. For more information on <code>summary()</code> and its various options, see <a href="inference-local.html">here</a>.</p>
 <p>Typically, one would carry out cross-validation for the purposes of assessing the predictive accuracy of the model at various values of <span class="math inline">\(\lambda\)</span>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y, <span class="dt">h=</span><span class="dv">5</span>, <span class="dt">w=</span><span class="dv">6</span>)</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
 <p><img src="models_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
-<p>There are some options here:</p>
+<p>By default, the cross-validation error (CVE) is plotted; for all models in <code>ncvreg</code>, the cross-validation error is defined as <span class="math display">\[
+\begin{align*}
+\CVE(\lam) &amp;= \frac{1}{n} \sum_i L\{y_i, \eta_{-i}(\lam)\}\\
+\eta_{-i}(\lam) &amp;= \sum_j x_{ij}\bh_j(-i,\lam),
+\end{align*}
+\]</span> where <span class="math inline">\(\bbh(-i,\lam)\)</span> denotes the estimated regression coefficients at <span class="math inline">\(\lam\)</span> for the fold in which observation <span class="math inline">\(i\)</span> has been left out. The loss function is determined by the type of model; for least squares loss, therefore, <span class="math display">\[
+\CVE(\lam) = \frac{1}{n} \sum_i\{y_i-\eta_{-i}(\lam)\}^2\\
+\]</span></p>
+<p>Alternatively, one can plot <span class="math inline">\(\hat{\sigma}(\lam)\)</span>, the signal-to-noise ration (SNR), or <span class="math inline">\(R^2\)</span>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'cve'</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'snr'</span>)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'scale'</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'scale'</span>)  <span class="co"># sigma hat</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'snr'</span>)</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'rsq'</span>)</a></code></pre></div>
 <p><img src="models_files/figure-html/unnamed-chunk-5-1.png" width="480"></p>
-<p>What to plot on the vertical axis. cve plots the cross-validation error (deviance); rsq plots an estimate of the fraction of the deviance explained by the model (R-squared); snr plots an estimate of the signal-to-noise ratio; scale plots, for family=“gaussian”, an estimate of the scale parameter (standard deviation); pred plots, for family=“binomial”, the estimated prediction error; all produces all of the above.</p>
-<p>And a summary:</p>
+<p>Calling <code>summary</code> on a <code>cv.ncvreg</code> object will provide a summary of these quantities at the value which minimizes <span class="math inline">\(\CVE\)</span>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">summary</span>(cvfit)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># MCP-penalized linear regression with n=97, p=8</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># At minimum cross-validation error (lambda=0.0018):</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># At minimum cross-validation error (lambda=0.0258):</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 8</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#   Cross-validation error (deviance): 0.54</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#   R-squared: 0.59</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#   Signal-to-noise ratio: 1.46</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#   Scale estimate (sigma): 0.733</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#   Nonzero coefficients: 7</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#   Cross-validation error (deviance): 0.59</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#   R-squared: 0.55</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#   Signal-to-noise ratio: 1.23</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#   Scale estimate (sigma): 0.769</span></a></code></pre></div>
+<p>To access the elements of the fit, <code>coef</code> and <code>predict</code> methods are provided. For example, <code>coef(fit, lambda=0.02)</code> returns the estimated coefficients at <span class="math inline">\(\lambda\)</span>=0.02, while <code>coef(cvfit)</code> returns the estimated coefficients at the value of <span class="math inline">\(\lam\)</span> minimizing CVE.</p>
 </div>
 <div id="binomial-logistic-regression" class="section level1">
 <h1 class="hasAnchor">
 <a href="#binomial-logistic-regression" class="anchor"></a>Binomial (logistic regression)</h1>
+<p>In logistic regression, the loss function is: <span class="math display">\[
+L(\bb|\X,\y) = \sum_{i:y_i=1}\log\ph_i + \sum_{i:y_i=0}\log(1-\ph_i);
+\]</span> this loss is the negative log-likelihood if the outcome <span class="math inline">\(\y\)</span> follows a binomial distribution with probabilities given by: <span class="math display">\[
+\ph_i = \frac{\exp(\eta_i)}{1+\eta_i},
+\]</span> where <span class="math inline">\(\be = \X\bb\)</span> denotes the linear predictors. The <code>Heart</code> data provides an example of data that can be used with logistic regression. Loading this data set into R,</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">data</span>(Heart)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">X &lt;-<span class="st"> </span>Heart<span class="op">$</span>X</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">y &lt;-<span class="st"> </span>Heart<span class="op">$</span>y</a></code></pre></div>
+<p>One can change the loss function by specifying <code>family</code>; to fit a penalized logistic regression model,</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/ncvreg.html">ncvreg</a></span>(X, y, <span class="dt">family=</span><span class="st">'binomial'</span>)</a></code></pre></div>
+<p>As before, you can call <code>plot</code>, <code>coef</code>, <code>predict</code>, <code>summary</code>, etc. on <code>fit</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.02</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># MCP-penalized logistic regression with n=462, p=9</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co"># At lambda=0.0200:</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#   Nonzero coefficients         : 7</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 2.05</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#   Average mfdr (7 features)    : 0.293</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co"># </span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#           Estimate       z      mfdr</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co"># age      0.0506911  5.8368   &lt; 1e-04</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co"># famhist  0.9096673  4.1177 0.0006454</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co"># tobacco  0.0802204  3.3117 0.0116427</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co"># typea    0.0370468  3.1833 0.0176724</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co"># ldl      0.1657752  3.1019 0.0228841</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co"># sbp      0.0001648  0.9981 1.0000000</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co"># obesity -0.0087180 -1.2579 1.0000000</span></a></code></pre></div>
+<p>Cross-validation is similar, although (a) there is a new option, <code>type='pred'</code> for cross-validated prediction error (misclassification error) and (b) <code>type='scale'</code> is no longer an option:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y, <span class="dt">family=</span><span class="st">'binomial'</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'all'</span>)</a></code></pre></div>
+<p><img src="models_files/figure-html/unnamed-chunk-10-1.png" width="480"></p>
+<p>Note that, as defined above, cross-validation error is the cross-validated deviance. At its optmium, the penalized logistic regression model can predict about 73% of coronary heart disease cases correctly (27% misclassification).</p>
 </div>
 <div id="poisson" class="section level1">
 <h1 class="hasAnchor">
 <a href="#poisson" class="anchor"></a>Poisson</h1>
+<p>In Poisson regression, the loss function is: <span class="math display">\[
+L(\bb|\X,\y) = \sum_i \{y_i\log\mh_i - \mh_i\};
+\]</span> this loss is the negative log-likelihood if the outcome <span class="math inline">\(\y\)</span> follows a Poisson distribution with rate parameter given by: <span class="math display">\[
+\mh_i = \exp(\eta_i).
+\]</span> To fit a penalized Poisson regression model with <code>ncvreg</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/ncvreg.html">ncvreg</a></span>(X, y, <span class="dt">family=</span><span class="st">'poisson'</span>)</a></code></pre></div>
 </div>
 <div id="cox-proportional-hazards" class="section level1">
 <h1 class="hasAnchor">
 <a href="#cox-proportional-hazards" class="anchor"></a>Cox proportional hazards</h1>
+<p>The above models all fall into the category of distributions known as exponential families (hence the <code>family</code>) argument. <code>ncvreg</code> also allows users to fit Cox proportional hazards models, although these models fall outside this framework and are therefore fit using a different function, <code>ncvsurv</code>. In Cox regression, the loss function is <span class="math display">\[
+L(\bb|\X,\y) = \sum_{j=1}^{m} d_j \eta_j - \sum_{j=1}^{m} d_j \log\left\{\sum_{i \in R_j} \exp(\eta_i)\right\},
+\]</span> where <span class="math inline">\(t_1 &lt; t_2 &lt; \ldots &lt; t_m\)</span> denotes an increasing list of unique failure times indexed by <span class="math inline">\(j\)</span> and <span class="math inline">\(R_j\)</span> denotes the set of observations still at risk at time <span class="math inline">\(t_j\)</span>, known as the risk set.</p>
+<p>The <code>Lung</code> data (see <code><a href="../../reference/Lung.html">?Lung</a></code> for more details) provides an example of time-to-event data that can be used with Cox regression. Loading this data set into R,</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">data</span>(Lung)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">X &lt;-<span class="st"> </span>Lung<span class="op">$</span>X</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">y &lt;-<span class="st"> </span>Lung<span class="op">$</span>y</a></code></pre></div>
+<p>To fit a penalized Cox regression model,</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/ncvsurv.html">ncvsurv</a></span>(X, y)</a></code></pre></div>
+<p>As before, you can call <code>plot</code>, <code>coef</code>, <code>predict</code>, <code>summary</code>, etc. on <code>fit</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">summary</span>(fit, <span class="dt">lambda=</span><span class="fl">0.02</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co"># MCP-penalized Cox regression with n=137, p=8</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co"># At lambda=0.0200:</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co"># -------------------------------------------------</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#   Nonzero coefficients         : 7</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#   Expected nonzero coefficients: 4.34</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#   Average mfdr (7 features)    : 0.621</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co"># </span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#           Estimate       z      mfdr</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co"># karno    -0.032745 -6.5040   &lt; 1e-04</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co"># squamous -0.853399 -3.7843 0.0055248</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co"># large    -0.460405 -2.0522 0.5168683</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co"># trt       0.294489  1.5967 0.8221987</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co"># age      -0.008869 -1.0297 1.0000000</span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co"># prior     0.033326  0.3585 1.0000000</span></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co"># adeno     0.324743  1.3941 1.0000000</span></a></code></pre></div>
+<p>Cross-validation is similar:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/cv.ncvsurv.html">cv.ncvsurv</a></span>(X, y)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'cve'</span>)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw">plot</span>(cvfit, <span class="dt">type=</span><span class="st">'rsq'</span>)</a></code></pre></div>
+<p><img src="models_files/figure-html/models-cox-cv-1.png" width="480"></p>
+<p>In addition to the quantities like coefficients and number of nonzero coefficients that <code>predict</code> returns for other types of models, <code>predict()</code> for an <code>ncvsurv</code> object can also estimate the baseline hazard (using the Kalbfleish-Prentice method) and therefore, the survival function. A method to plot the resulting function is also available:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">S &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, X[<span class="dv">1</span>,], <span class="dt">type=</span><span class="st">'survival'</span>, <span class="dt">lambda=</span><span class="fl">0.02</span>)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">S</span>(<span class="dv">365</span>)   <span class="co"># Estiamted survival at 1 year</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co"># [1] 0.2447147</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw">plot</span>(S, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">200</span>))</a></code></pre></div>
+<p><img src="models_files/figure-html/models-cox-surv-single-1.png" width="480"></p>
+<p>When multiple subjects are involved in the prediction:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">S &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, X, <span class="dt">type=</span><span class="st">'survival'</span>, <span class="dt">lambda=</span><span class="fl">0.02</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">S[[<span class="dv">1</span>]](<span class="dv">365</span>)  <span class="co"># Estimated survival at 1 year for subject 1</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># [1] 0.2447147</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">S[[<span class="dv">2</span>]](<span class="dv">365</span>)  <span class="co"># Estimated survival at 1 year for subject 2</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co"># [1] 0.3340281</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">plot</span>(S, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">200</span>))</a></code></pre></div>
+<p><img src="models_files/figure-html/models-cox-surv-multiple-1.png" width="480"></p>
 </div>
   </div>
 

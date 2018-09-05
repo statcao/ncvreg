@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
       </span>
     </div>
 
@@ -267,12 +267,12 @@
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>Lung</span>$<span class='no'>y</span>
 
 <span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'>cv.ncvsurv</span>(<span class='no'>X</span>, <span class='no'>y</span>)
-<span class='fu'>summary</span>(<span class='no'>cvfit</span>)</div><div class='output co'>#&gt; MCP-penalized Cox regression with n=137, p=9
+<span class='fu'>summary</span>(<span class='no'>cvfit</span>)</div><div class='output co'>#&gt; MCP-penalized Cox regression with n=137, p=8
 #&gt; At minimum cross-validation error (lambda=0.1467):
 #&gt; -------------------------------------------------
 #&gt;   Nonzero coefficients: 3
-#&gt;   Cross-validation error (deviance): 484.34
-#&gt;   R-squared: 0.04
+#&gt;   Cross-validation error (deviance): 7.57
+#&gt;   R-squared: 0.27
 #&gt;   Signal-to-noise ratio: 0.04</div><div class='input'><span class='fu'>plot</span>(<span class='no'>cvfit</span>)</div><div class='img'><img src='cv.ncvsurv-1.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>cvfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"rsq"</span>)</div><div class='img'><img src='cv.ncvsurv-2.png' alt='' width='480' height='480' /></div><div class='input'>
 ## requires loading the parallel package
 </div><span class='co'># NOT RUN {</span>
