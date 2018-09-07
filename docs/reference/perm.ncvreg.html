@@ -214,22 +214,24 @@
 <span class='fu'>data</span>(<span class='no'>Prostate</span>)
 <span class='no'>pmfit</span> <span class='kw'>&lt;-</span> <span class='fu'>perm.ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
 
-<span class='fu'>par</span>(<span class='kw'>mfcol</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfcol</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
 <span class='fu'>plot</span>(<span class='no'>pmfit</span>)
 <span class='fu'>plot</span>(<span class='no'>pmfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"EF"</span>)
 <span class='fu'>plot</span>(<span class='no'>pmfit</span>$<span class='no'>fit</span>)
 <span class='no'>lam</span> <span class='kw'>&lt;-</span> <span class='no'>pmfit</span>$<span class='no'>fit</span>$<span class='no'>lambda</span>
 
 <span class='no'>pmfit.r</span> <span class='kw'>&lt;-</span> <span class='fu'>perm.ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>permute</span><span class='kw'>=</span><span class='st'>'residuals'</span>)
-<span class='fu'>plot</span>(<span class='no'>pmfit.r</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>"red"</span>)              <span class='co'># Permuting residuals is</span></div><div class='input'><span class='fu'>lines</span>(<span class='no'>lam</span>, <span class='no'>pmfit</span>$<span class='no'>mFDR</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>"gray60"</span>)  <span class='co'># less conservative</span></div><div class='img'><img src='perm.ncvreg-1.png' alt='' width='480' height='480' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>pmfit.r</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>"red"</span>)              <span class='co'># Permuting residuals is</span></div><div class='input'><span class='fu'>lines</span>(<span class='no'>lam</span>, <span class='no'>pmfit</span>$<span class='no'>mFDR</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>"gray60"</span>)  <span class='co'># less conservative</span></div><div class='img'><img src='perm.ncvreg-1.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
 <span class='co'># Logistic regression ------------------------------------------------</span>
 <span class='fu'>data</span>(<span class='no'>Heart</span>)
 <span class='no'>pmfit</span> <span class='kw'>&lt;-</span> <span class='fu'>perm.ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
 
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
 <span class='fu'>plot</span>(<span class='no'>pmfit</span>)
 <span class='fu'>plot</span>(<span class='no'>pmfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"EF"</span>)
-<span class='fu'>plot</span>(<span class='no'>pmfit</span>$<span class='no'>fit</span>)</div><div class='img'><img src='perm.ncvreg-2.png' alt='' width='480' height='480' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>pmfit</span>$<span class='no'>fit</span>)
+<span class='fu'>par</span>(<span class='no'>op</span>)</div><div class='img'><img src='perm.ncvreg-2.png' alt='' width='480' height='480' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

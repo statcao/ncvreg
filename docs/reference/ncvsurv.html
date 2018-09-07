@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.11.0</span>
       </span>
     </div>
 
@@ -253,54 +253,56 @@
   to accomplish this, the second derivative (Hessian) of the Cox partial
   log-likelihood is diagonalized (see references for details).  The
   objective function is defined to be
-  $$-\frac{1}{n}L(\beta|X,y) + \textrm{penalty},$$
-  where L is the partial log-likelihood from the Cox regression
-  model.</p>
+  $$Q(\beta|X, y) = \frac{1}{n} L(\beta|X, y) +
+    P_\lambda(\beta)$$
+  where the loss function L is the -2 times the partial log-likelihood
+  from the Cox regression model.
+  <a href='http://pbreheny.github.io/ncvreg/articles/web/models.html'>See
+    here for more details</a>.</p>
 <p>Presently, ties are not handled by <code>ncvsurv</code> in a particularly
   sophisticated manner.  This will be improved upon in a future release
   of <code>ncvreg</code>.</p>
-<p>Adaptive rescaling (see references) is used for MCP and SCAD models.
-  The convexity diagnostics rely on a fine covering of (lambda.min,
-  lambda.max); choosing a low value of <code>nlambda</code> may produce
-  unreliable results.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object with S3 class <code>"ncvsurv"</code> containing:</p>
-<dt>beta</dt><dd><p>The fitted matrix of coefficients.  The number of rows is
-    equal to the number of coefficients, and the number of columns is
-    equal to <code>nlambda</code>.</p></dd>
-  <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number
-    of iterations until convergence at each value of <code>lambda</code>.</p></dd>
-  <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the
-    path.</p></dd>
-  <dt>penalty</dt><dd><p>Same as above.</p></dd>
-  <dt>model</dt><dd><p>Same as above.</p></dd>
-  <dt>gamma</dt><dd><p>Same as above.</p></dd>
-  <dt>alpha</dt><dd><p>Same as above.</p></dd>
-  <dt>convex.min</dt><dd><p>The last index for which the objective function is
-    locally convex.  The smallest value of lambda for which the
-    objective function is convex is therefore <code>lambda[convex.min]</code>,
-    with corresponding coefficients <code>beta[,convex.min]</code>.</p></dd>
-  <dt>loss</dt><dd><p>The negative partial log-likelihood of the fitted model at
-    each value of <code>lambda</code>.</p></dd>
-  <dt>penalty.factor</dt><dd><p>Same as above.</p></dd>
-  <dt>n</dt><dd><p>The number of observations.</p></dd>
+    <p>An object with S3 class <code>"ncvsurv"</code> containing:</p><dl class='dl-horizontal'>
+    <dt>beta</dt><dd><p>The fitted matrix of coefficients.  The number of rows is
+      equal to the number of coefficients, and the number of columns is
+      equal to <code>nlambda</code>.</p></dd>
+    <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number
+      of iterations until convergence at each value of <code>lambda</code>.</p></dd>
+    <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the
+      path.</p></dd>
+    <dt>penalty</dt><dd><p>Same as above.</p></dd>
+    <dt>model</dt><dd><p>Same as above.</p></dd>
+    <dt>gamma</dt><dd><p>Same as above.</p></dd>
+    <dt>alpha</dt><dd><p>Same as above.</p></dd>
+    <dt>convex.min</dt><dd><p>The last index for which the objective function is
+      locally convex.  The smallest value of lambda for which the
+      objective function is convex is therefore <code>lambda[convex.min]</code>,
+      with corresponding coefficients <code>beta[,convex.min]</code>.</p></dd>
+    <dt>loss</dt><dd><p>The negative partial log-likelihood of the fitted model at
+      each value of <code>lambda</code>.</p></dd>
+    <dt>penalty.factor</dt><dd><p>Same as above.</p></dd>
+    <dt>n</dt><dd><p>The number of observations.</p></dd>
+  </dl>
 
-For Cox models, the following objects are also returned (and are necessary to
-estimate baseline survival conditonal on the estimated regression coefficients),
-all of which are ordered by time on study.  I.e., the ith row of W does
-not correspond to the ith row of X):
+<p>For Cox models, the following objects are also returned (and are
+  necessary to estimate baseline survival conditonal on the estimated
+  regression coefficients), all of which are ordered by time on study.
+  I.e., the ith row of <code>W</code> does not correspond to the ith row of
+  <code>X</code>):</p>
+<p></p><dl class='dl-horizontal'>
+    <dt>W</dt><dd><p>Matrix of <code>exp(beta)</code> values for each subject over all
+      <code>lambda</code> values.</p></dd>
+    <dt>time</dt><dd><p>Times on study.</p></dd>
+    <dt>fail</dt><dd><p>Failure event indicator.</p></dd>
+  </dl>
 
-  <dt>W</dt><dd><p>Matrix of <code>exp(beta)</code> values for each subject over all
-    <code>lambda</code> values.</p></dd>
-  <dt>time</dt><dd><p>Times on study.</p></dd>
-  <dt>fail</dt><dd><p>Failure event indicator.</p></dd>
-
-Additionally, if returnX=TRUE, the object will also contain
-  
-  <dt>X</dt><dd><p>The standardized design matrix.</p></dd>
-
+<p>Additionally, if <code>returnX=TRUE</code>, the object will also contain</p>
+<p></p><dl class='dl-horizontal'>
+    <dt>X</dt><dd><p>The standardized design matrix.</p></dd>
+  </dl>
 
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -320,7 +322,7 @@ Additionally, if returnX=TRUE, the object will also contain
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='plot.ncvreg.html'>plot.ncvreg</a></code>, <code><a href='cv.ncvsurv.html'>cv.ncvsurv</a></code></p></div>
+    <div class='dont-index'><p><code><a href='plot-ncvreg.html'>plot.ncvreg</a></code>, <code><a href='cv-ncvreg.html'>cv.ncvsurv</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -328,7 +330,7 @@ Additionally, if returnX=TRUE, the object will also contain
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='no'>Lung</span>$<span class='no'>X</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>Lung</span>$<span class='no'>y</span>
 
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvsurv</span>(<span class='no'>X</span>, <span class='no'>y</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvsurv</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>10</span>)
@@ -336,17 +338,18 @@ Additionally, if returnX=TRUE, the object will also contain
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvsurv</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>1.5</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>1.5</span>)))
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvsurv</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>penalty</span><span class='kw'>=</span><span class='st'>"SCAD"</span>)
-<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"SCAD, "</span>,<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))</div><div class='img'><img src='ncvsurv-1.png' alt='' width='480' height='480' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"SCAD, "</span>,<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))</div><div class='img'><img src='ncvsurv-1.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvsurv</span>(<span class='no'>X</span>,<span class='no'>y</span>)
 <span class='no'>ll</span> <span class='kw'>&lt;-</span> <span class='fu'>log</span>(<span class='no'>fit</span>$<span class='no'>lambda</span>)
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>1</span>))
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>1</span>))
 <span class='fu'>plot</span>(<span class='no'>ll</span>, <span class='fu'>BIC</span>(<span class='no'>fit</span>), <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"l"</span>, <span class='kw'>xlim</span><span class='kw'>=</span><span class='fu'>rev</span>(<span class='fu'>range</span>(<span class='no'>ll</span>)))
 <span class='no'>lam</span> <span class='kw'>&lt;-</span> <span class='no'>fit</span>$<span class='no'>lambda</span>[<span class='fu'>which.min</span>(<span class='fu'>BIC</span>(<span class='no'>fit</span>))]
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>coef</span>(<span class='no'>fit</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='no'>lam</span>)
 <span class='no'>b</span>[<span class='no'>b</span><span class='kw'>!=</span><span class='fl'>0</span>]</div><div class='output co'>#&gt;       karno    squamous       adeno 
-#&gt; -0.03316393 -0.42452397  0.41834812 </div><div class='input'><span class='fu'>plot</span>(<span class='no'>fit</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='kw'>v</span><span class='kw'>=</span><span class='no'>lam</span>)</div><div class='img'><img src='ncvsurv-2.png' alt='' width='480' height='480' /></div><div class='input'>
+#&gt; -0.03316393 -0.42452397  0.41834812 </div><div class='input'><span class='fu'>plot</span>(<span class='no'>fit</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='kw'>v</span><span class='kw'>=</span><span class='no'>lam</span>)</div><div class='img'><img src='ncvsurv-2.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
 <span class='no'>S</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>fit</span>, <span class='no'>X</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>'survival'</span>, <span class='kw'>lambda</span><span class='kw'>=</span><span class='no'>lam</span>)
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>))
 <span class='fu'>plot</span>(<span class='no'>S</span>, <span class='kw'>xlim</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>0</span>,<span class='fl'>200</span>))</div><div class='img'><img src='ncvsurv-3.png' alt='' width='480' height='480' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -366,7 +369,7 @@ Additionally, if returnX=TRUE, the object will also contain
     </ul>
 
     <h2>Author</h2>
-    Patrick Breheny &lt;patrick-breheny@uiowa.edu&gt;
+    Patrick Breheny
   </div>
 </div>
 

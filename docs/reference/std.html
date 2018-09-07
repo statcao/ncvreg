@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.11.0</span>
       </span>
     </div>
 
@@ -171,7 +171,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='fl'>50</span>), <span class='fl'>10</span>, <span class='fl'>5</span>)
 <span class='no'>S</span> <span class='kw'>&lt;-</span> <span class='fu'>std</span>(<span class='no'>X</span>)
-<span class='fu'>apply</span>(<span class='no'>S</span>, <span class='fl'>2</span>, <span class='no'>sum</span>)</div><div class='output co'>#&gt; [1] -2.775558e-16  9.436896e-16  7.285839e-16  2.046974e-16 -5.828671e-16</div><div class='input'><span class='fu'>apply</span>(<span class='no'>S</span>, <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>mean</span>(<span class='no'>x</span>^<span class='fl'>2</span>))</div><div class='output co'>#&gt; [1] 1 1 1 1 1</div></pre>
+<span class='fu'>apply</span>(<span class='no'>S</span>, <span class='fl'>2</span>, <span class='no'>sum</span>)</div><div class='output co'>#&gt; [1]  4.996004e-16  9.436896e-16 -3.885781e-16 -3.330669e-16 -4.093947e-16</div><div class='input'><span class='fu'>apply</span>(<span class='no'>S</span>, <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>mean</span>(<span class='no'>x</span>^<span class='fl'>2</span>))</div><div class='output co'>#&gt; [1] 1 1 1 1 1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

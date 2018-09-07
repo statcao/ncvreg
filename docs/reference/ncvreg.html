@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.11.0</span>
       </span>
     </div>
 
@@ -256,50 +256,48 @@
   logistic regression models, some care is taken to avoid model
   saturation; the algorithm may exit early in this setting.  The
   objective function is defined to be
-  $$\frac{1}{2n}\textrm{RSS} + \textrm{penalty}$$
-  for <code>"gaussian"</code> and
-  $$-\frac{1}{n}\ell + \textrm{penalty}$$
-  for <code>"binomial"</code> or <code>"poisson"</code>, where the likelihood is
-  from a traditional generalized linear model assuming the canonical
-  link (logit for <code>"binomial"</code>; log for <code>"poisson"</code>).<br />
-  <br />
-  This algorithm is stable, very efficient, and generally converges
-  quite rapidly to the solution.  For GLMs, adaptive rescaling (see
-  reference) is used.<br />
-  <br />
-  The convexity diagnostics rely on a fine covering of
-  (lambda.min,lambda.max); choosing a low value of <code>nlambda</code> may
-  produce unreliable results.</p>
+  $$Q(\beta|X, y) = \frac{1}{n} L(\beta|X, y) +
+    P_\lambda(\beta)$$
+  where the loss function L is -2 times the log likelihood for the
+  specified outcome distribution (gaussian/binomial/poisson).
+  <a href='http://pbreheny.github.io/ncvreg/articles/web/models.html'>See
+    here for more details</a>.</p>  
+<p>This algorithm is stable, very efficient, and generally converges
+  quite rapidly to the solution.  For GLMs,
+  <a href='http://myweb.uiowa.edu/pbreheny/pdf/Breheny2011.pdf'>adaptive
+    rescaling</a> is used.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object with S3 class <code>"ncvreg"</code> containing:</p>
-<dt>beta</dt><dd><p>The fitted matrix of coefficients.  The number of rows is
-    equal to the number of coefficients, and the number of columns is
-    equal to <code>nlambda</code>.</p></dd>
-  <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number
-    of iterations until convergence at each value of <code>lambda</code>.</p></dd>
-  <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the
-    path.</p></dd>
-  <dt>penalty</dt><dd><p>Same as above.</p></dd>
-  <dt>family</dt><dd><p>Same as above.</p></dd>
-  <dt>gamma</dt><dd><p>Same as above.</p></dd>
-  <dt>alpha</dt><dd><p>Same as above.</p></dd>
-  <dt>convex.min</dt><dd><p>The last index for which the objective function is
-    locally convex.  The smallest value of lambda for which the
-    objective function is convex is therefore <code>lambda[convex.min]</code>,
-    with corresponding coefficients <code>beta[,convex.min]</code>.</p></dd>
-  <dt>loss</dt><dd><p>A vector containing either the residual sum of squares
-    (<code>"gaussian"</code>) or negative log-likelihood (<code>"binomial"</code>
-    and <code>"poisson"</code>) of the fitted model at each value of
-    <code>lambda</code>.</p></dd>
-  <dt>penalty.factor</dt><dd><p>Same as above.</p></dd>
-  <dt>n</dt><dd><p>Sample size.</p></dd>
-  
-Additionally, if returnX=TRUE, the object will also contain
-  
-  <dt>X</dt><dd><p>The standardized design matrix.</p></dd>
-  <dt>y</dt><dd><p>The response, centered if <code>family='gaussian'</code>.</p></dd>
+    <p>An object with S3 class <code>"ncvreg"</code> containing:</p><dl class='dl-horizontal'>
+    <dt>beta</dt><dd><p>The fitted matrix of coefficients.  The number of rows
+      is equal to the number of coefficients, and the number of columns
+      is equal to <code>nlambda</code>.</p></dd>
+    <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number
+      of iterations until convergence at each value of <code>lambda</code>.</p></dd>
+    <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the
+      path.</p></dd>
+    <dt>penalty</dt><dd><p>Same as above.</p></dd>
+    <dt>family</dt><dd><p>Same as above.</p></dd>
+    <dt>gamma</dt><dd><p>Same as above.</p></dd>
+    <dt>alpha</dt><dd><p>Same as above.</p></dd>
+    <dt>convex.min</dt><dd><p>The last index for which the objective function is
+      locally convex.  The smallest value of lambda for which the
+      objective function is convex is therefore <code>lambda[convex.min]</code>,
+      with corresponding coefficients <code>beta[,convex.min]</code>.</p></dd>
+    <dt>loss</dt><dd><p>A vector containing either the residual sum of squares
+      (<code>"gaussian"</code>) or negative log-likelihood (<code>"binomial"</code>
+      and <code>"poisson"</code>) of the fitted model at each value of
+      <code>lambda</code>.</p></dd>
+    <dt>penalty.factor</dt><dd><p>Same as above.</p></dd>
+    <dt>n</dt><dd><p>Sample size.</p></dd>
+  </dl>
+
+<p>Additionally, if <code>returnX=TRUE</code>, the object will also contain</p>
+<p></p><dl class='dl-horizontal'>
+    <dt>X</dt><dd><p>The standardized design matrix.</p></dd>
+    <dt>y</dt><dd><p>The response, centered if <code>family='gaussian'</code>.</p></dd>
+  </dl>
 
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -310,59 +308,67 @@ Additionally, if returnX=TRUE, the object will also contain
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='plot.ncvreg.html'>plot.ncvreg</a></code>, <code><a href='cv.ncvreg.html'>cv.ncvreg</a></code></p></div>
+    <div class='dont-index'><p><code><a href='plot-ncvreg.html'>plot.ncvreg</a></code>, <code><a href='cv-ncvreg.html'>cv.ncvreg</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Linear regression --------------------------------------------------</span>
 <span class='fu'>data</span>(<span class='no'>Prostate</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='no'>Prostate</span>$<span class='no'>X</span>
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>Prostate</span>$<span class='no'>y</span>
 
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>10</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>10</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>1.5</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>1.5</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>1.5</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>penalty</span><span class='kw'>=</span><span class='st'>"SCAD"</span>)
-<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"SCAD, "</span>,<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))</div><div class='img'><img src='ncvreg-1.png' alt='' width='480' height='480' /></div><div class='input'>
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>penalty</span><span class='kw'>=</span><span class='st'>"SCAD"</span>)
+<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"SCAD, "</span>,<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))</div><div class='img'><img src='ncvreg-1.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>1</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.9</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.9</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.9</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.5</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.5</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.5</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.1</span>)
-<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.1</span>)))</div><div class='img'><img src='ncvreg-2.png' alt='' width='480' height='480' /></div><div class='input'>
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
-<span class='fu'>plot</span>(<span class='fu'><a href='mfdr.html'>mfdr</a></span>(<span class='no'>fit</span>))            <span class='co'>## Independence approximation</span>
-<span class='fu'>plot</span>(<span class='fu'><a href='mfdr.html'>mfdr</a></span>(<span class='no'>fit</span>), <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"EF"</span>) <span class='co'>## Independence approximation</span>
-<span class='no'>perm.fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='perm.ncvreg.html'>perm.ncvreg</a></span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.1</span>)
+<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.1</span>)))</div><div class='img'><img src='ncvreg-2.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
+<span class='fu'>plot</span>(<span class='fu'><a href='mfdr.html'>mfdr</a></span>(<span class='no'>fit</span>))             <span class='co'># Independence approximation</span>
+<span class='fu'>plot</span>(<span class='fu'><a href='mfdr.html'>mfdr</a></span>(<span class='no'>fit</span>), <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"EF"</span>)  <span class='co'># Independence approximation</span>
+<span class='no'>perm.fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='perm-ncvreg.html'>perm.ncvreg</a></span>(<span class='no'>X</span>, <span class='no'>y</span>)
 <span class='fu'>plot</span>(<span class='no'>perm.fit</span>)
-<span class='fu'>plot</span>(<span class='no'>perm.fit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"EF"</span>)</div><div class='img'><img src='ncvreg-3.png' alt='' width='480' height='480' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>perm.fit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"EF"</span>)</div><div class='img'><img src='ncvreg-3.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
 <span class='co'># Logistic regression ------------------------------------------------</span>
 <span class='fu'>data</span>(<span class='no'>Heart</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='no'>Heart</span>$<span class='no'>X</span>
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>Heart</span>$<span class='no'>y</span>
 
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>10</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>10</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>1.5</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>1.5</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>1.5</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>penalty</span><span class='kw'>=</span><span class='st'>"SCAD"</span>)
-<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"SCAD, "</span>,<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))</div><div class='img'><img src='ncvreg-4.png' alt='' width='480' height='480' /></div><div class='input'>
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>penalty</span><span class='kw'>=</span><span class='st'>"SCAD"</span>)
+<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"SCAD, "</span>,<span class='no'>gamma</span>,<span class='st'>"="</span>,<span class='fl'>3</span>)))</div><div class='img'><img src='ncvreg-4.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>1</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.9</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.9</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.9</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.5</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.5</span>)
 <span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.5</span>)))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.1</span>)
-<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.1</span>)))</div><div class='img'><img src='ncvreg-5.png' alt='' width='480' height='480' /></div></pre>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>ncvreg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>, <span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>0.1</span>)
+<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='no'>alpha</span>,<span class='st'>"="</span>,<span class='fl'>0.1</span>)))</div><div class='img'><img src='ncvreg-5.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -381,7 +387,7 @@ Additionally, if returnX=TRUE, the object will also contain
     </ul>
 
     <h2>Author</h2>
-    Patrick Breheny &lt;patrick-breheny@uiow.edu&gt;
+    Patrick Breheny
   </div>
 </div>
 

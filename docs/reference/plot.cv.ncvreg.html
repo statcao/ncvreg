@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plots the cross-validation curve from a "cv.ncvreg" object — plot.cv.ncvreg • ncvreg</title>
+<title>Plots the cross-validation curve from a cv.ncvreg object — plot.cv.ncvreg • ncvreg</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -32,10 +32,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Plots the cross-validation curve from a "cv.ncvreg" object — plot.cv.ncvreg" />
+<meta property="og:title" content="Plots the cross-validation curve from a cv.ncvreg object — plot.cv.ncvreg" />
 
-<meta property="og:description" content="Plots the cross-validation curve from a &quot;cv.ncvreg&quot;
-  object, along with standard error bars." />
+<meta property="og:description" content="Plots the cross-validation curve from a cv.ncvreg or
+  cv.ncvsurv object, along with standard error bars." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +121,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plots the cross-validation curve from a "cv.ncvreg" object</h1>
+    <h1>Plots the cross-validation curve from a cv.ncvreg object</h1>
     
     <div class="hidden name"><code>plot.cv.ncvreg.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Plots the cross-validation curve from a "cv.ncvreg"
-  object, along with standard error bars.</p>
+    <p>Plots the cross-validation curve from a <code>cv.ncvreg</code> or
+  <code>cv.ncvsurv</code> object, along with standard error bars.</p>
     
     </div>
 
@@ -143,7 +143,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A <code>"cv.ncvreg"</code> object.</p></td>
+      <td><p>A <code>cv.ncvreg</code> or <code>cv.ncvsurv</code> object.</p></td>
     </tr>
     <tr>
       <th>log.l</th>
@@ -187,9 +187,8 @@
 
     <p>Error bars representing approximate 68% confidence intervals are
   plotted along with the estimates at value of <code>lambda</code>.  For
-  <code>rsq</code> and <code>snr</code>, these confidence intervals are quite crude,
-  especially near zero, and will hopefully be improved upon in later
-  versions of <code>ncvreg</code>.</p>
+  <code>rsq</code> and <code>snr</code> applied to models other than linear
+  regression, the Cox-Snell R-squared is used.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -206,13 +205,21 @@
     <pre class="examples"><div class='input'><span class='co'># Linear regression --------------------------------------------------</span>
 <span class='fu'>data</span>(<span class='no'>Prostate</span>)
 <span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv.ncvreg.html'>cv.ncvreg</a></span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
-<span class='fu'>plot</span>(<span class='no'>cvfit</span>)</div><div class='input'><span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
-<span class='fu'>plot</span>(<span class='no'>cvfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"all"</span>)</div><div class='img'><img src='plot.cv.ncvreg-1.png' alt='' width='480' height='480' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>cvfit</span>)</div><div class='input'><span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='fu'>plot</span>(<span class='no'>cvfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"all"</span>)</div><div class='img'><img src='plot.cv.ncvreg-1.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
 <span class='co'># Logistic regression ------------------------------------------------</span>
 <span class='fu'>data</span>(<span class='no'>Heart</span>)
 <span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv.ncvreg.html'>cv.ncvreg</a></span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
+<span class='fu'>plot</span>(<span class='no'>cvfit</span>)</div><div class='input'><span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))
+<span class='fu'>plot</span>(<span class='no'>cvfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"all"</span>)</div><div class='img'><img src='plot.cv.ncvreg-2.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)
+
+<span class='co'># Cox regression -----------------------------------------------------</span>
+<span class='fu'>data</span>(<span class='no'>Lung</span>)
+<span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv.ncvreg.html'>cv.ncvsurv</a></span>(<span class='no'>Lung</span>$<span class='no'>X</span>, <span class='no'>Lung</span>$<span class='no'>y</span>)
+<span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>))
 <span class='fu'>plot</span>(<span class='no'>cvfit</span>)
-<span class='fu'>par</span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>2</span>))</div><div class='img'><img src='plot.cv.ncvreg-2.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>cvfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"all"</span>)</div><div class='img'><img src='plot.cv.ncvreg-3.png' alt='' width='480' height='480' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>cvfit</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"rsq"</span>)</div><div class='img'><img src='plot.cv.ncvreg-3.png' alt='' width='480' height='480' /></div><div class='input'><span class='fu'>par</span>(<span class='no'>op</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -229,7 +236,7 @@
     </ul>
 
     <h2>Author</h2>
-    Patrick Breheny &lt;patrick-breheny@uiowa.edu&gt;
+    Patrick Breheny
   </div>
 </div>
 

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.11.0</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># pgg45    0.00168  1.160 1.0000000</span></a></code></pre></div>
 <p>In this case, it would appear that <code>lcavol</code>, <code>svi</code>, and <code>lweight</code> are clearly associated with the response, even after adjusting for the other variables in the model, while <code>lbph</code>, <code>age</code>, and <code>pgg45</code> may be false positives included simply by chance.</p>
 <p>Typically, one would carry out cross-validation for the purposes of assessing the predictive accuracy of the model at various values of <span class="math inline">\(\lambda\)</span>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cv.ncvreg.html">cv.ncvreg</a></span>(X, y)</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cvfit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cv-ncvreg.html">cv.ncvreg</a></span>(X, y)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">plot</span>(cvfit)</a></code></pre></div>
 <p><img src="getting-started_files/figure-html/cvplot-1.png" width="480"></p>
 <p>The value of <span class="math inline">\(\lambda\)</span> that minimizes the cross-validation error is given by <code>cvfit$lambda.min</code>, which in this case is 0.028. Applying <code>coef</code> to the output of <code>cv.ncvreg</code> returns the coefficients at that value of <span class="math inline">\(\lambda\)</span>:</p>

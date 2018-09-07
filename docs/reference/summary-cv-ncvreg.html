@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarizing inferences based on cross-validation — summary.cv.ncvreg • ncvreg</title>
+<title>Summarizing cross-validation-based inference — summary.cv.ncvreg • ncvreg</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Summarizing inferences based on cross-validation — summary.cv.ncvreg" />
+<meta property="og:title" content="Summarizing cross-validation-based inference — summary.cv.ncvreg" />
 
 <meta property="og:description" content="Summary method for cv.ncvreg objects" />
 <meta name="twitter:card" content="summary" />
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ncvreg</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.10.999</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.11.0</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Summarizing inferences based on cross-validation</h1>
+    <h1>Summarizing cross-validation-based inference</h1>
     
     <div class="hidden name"><code>summary-cv-ncvreg.Rd</code></div>
     </div>
@@ -163,25 +163,28 @@
 
     <p><code>summary.cv.ncvreg</code> produces an object with S3 class
   <code>"summary.cv.ncvreg"</code>.  The class has its own print method and
-  contains the following list elements:</p>
-<dt>penalty</dt><dd><p>The penalty used by <code>ncvreg</code>.</p></dd>
-  <dt>model</dt><dd><p>Either <code>"linear"</code> or <code>"logistic"</code>, depending on
-    the <code>family</code> option in <code>ncvreg</code>.</p></dd>
-  <dt>n</dt><dd><p>Number of observations</p></dd>
-  <dt>p</dt><dd><p>Number of regression coefficients (not including the
-    intercept).</p></dd>
-  <dt>min</dt><dd><p>The index of <code>lambda</code> with the smallest
-    cross-validation error.</p></dd>
-  <dt>lambda</dt><dd><p>The sequence of <code>lambda</code> values used by
-    <code>cv.ncvreg</code>.</p></dd>
-  <dt>cve</dt><dd><p>Cross-validation error (deviance).</p></dd>
-  <dt>r.squared</dt><dd><p>Proportion of variance explained by the model, as
-    estimated by cross-validation.</p></dd>
-  <dt>snr</dt><dd><p>Signal to noise ratio, as estimated by cross-validation.</p></dd>
-  <dt>sigma</dt><dd><p>For linear regression models, the scale parameter
-    estimate.</p></dd>
-  <dt>pe</dt><dd><p>For logistic regression models, the prediction error
-    (misclassification error).</p></dd>
+  contains the following list elements:</p><dl class='dl-horizontal'>
+    <dt>penalty</dt><dd><p>The penalty used by <code>ncvreg</code>.</p></dd>
+    <dt>model</dt><dd><p>Either <code>"linear"</code> or <code>"logistic"</code>, depending on
+      the <code>family</code> option in <code>ncvreg</code>.</p></dd>
+    <dt>n</dt><dd><p>Number of observations</p></dd>
+    <dt>p</dt><dd><p>Number of regression coefficients (not including the
+      intercept).</p></dd>
+    <dt>min</dt><dd><p>The index of <code>lambda</code> with the smallest
+      cross-validation error.</p></dd>
+    <dt>lambda</dt><dd><p>The sequence of <code>lambda</code> values used by
+      <code>cv.ncvreg</code>.</p></dd>
+    <dt>cve</dt><dd><p>Cross-validation error (deviance).</p></dd>
+    <dt>r.squared</dt><dd><p>Proportion of variance explained by the model, as
+      estimated by cross-validation.  For models outside of linear
+      regression, the Cox-Snell approach to defining R-squared is used.</p></dd>
+    <dt>snr</dt><dd><p>Signal to noise ratio, as estimated by cross-validation.</p></dd>
+    <dt>sigma</dt><dd><p>For linear regression models, the scale parameter
+      estimate.</p></dd>
+    <dt>pe</dt><dd><p>For logistic regression models, the prediction error
+      (misclassification error).</p></dd>
+  </dl>
+
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -191,33 +194,43 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='ncvreg.html'>ncvreg</a></code>, <code><a href='cv.ncvreg.html'>cv.ncvreg</a></code>,
-  <code><a href='plot.cv.ncvreg.html'>plot.cv.ncvreg</a></code></p></div>
+    <div class='dont-index'><p><code><a href='ncvreg.html'>ncvreg</a></code>, <code><a href='cv-ncvreg.html'>cv.ncvreg</a></code>,
+  <code><a href='plot-cv-ncvreg.html'>plot.cv.ncvreg</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Linear regression --------------------------------------------------</span>
 <span class='fu'>data</span>(<span class='no'>Prostate</span>)
-<span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv.ncvreg.html'>cv.ncvreg</a></span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
+<span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv-ncvreg.html'>cv.ncvreg</a></span>(<span class='no'>Prostate</span>$<span class='no'>X</span>, <span class='no'>Prostate</span>$<span class='no'>y</span>)
 <span class='fu'>summary</span>(<span class='no'>cvfit</span>)</div><div class='output co'>#&gt; MCP-penalized linear regression with n=97, p=8
-#&gt; At minimum cross-validation error (lambda=0.0008):
-#&gt; -------------------------------------------------
-#&gt;   Nonzero coefficients: 8
-#&gt;   Cross-validation error (deviance): 0.55
-#&gt;   R-squared: 0.58
-#&gt;   Signal-to-noise ratio: 1.38
-#&gt;   Scale estimate (sigma): 0.744</div><div class='input'>
-<span class='co'># Logistic regression ------------------------------------------------</span>
-<span class='fu'>data</span>(<span class='no'>Heart</span>)
-<span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv.ncvreg.html'>cv.ncvreg</a></span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
-<span class='fu'>summary</span>(<span class='no'>cvfit</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
-#&gt; At minimum cross-validation error (lambda=0.0102):
+#&gt; At minimum cross-validation error (lambda=0.0276):
 #&gt; -------------------------------------------------
 #&gt;   Nonzero coefficients: 7
+#&gt;   Cross-validation error (deviance): 0.52
+#&gt;   R-squared: 0.60
+#&gt;   Signal-to-noise ratio: 1.52
+#&gt;   Scale estimate (sigma): 0.724</div><div class='input'>
+<span class='co'># Logistic regression ------------------------------------------------</span>
+<span class='fu'>data</span>(<span class='no'>Heart</span>)
+<span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv-ncvreg.html'>cv.ncvreg</a></span>(<span class='no'>Heart</span>$<span class='no'>X</span>, <span class='no'>Heart</span>$<span class='no'>y</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
+<span class='fu'>summary</span>(<span class='no'>cvfit</span>)</div><div class='output co'>#&gt; MCP-penalized logistic regression with n=462, p=9
+#&gt; At minimum cross-validation error (lambda=0.0270):
+#&gt; -------------------------------------------------
+#&gt;   Nonzero coefficients: 5
 #&gt;   Cross-validation error (deviance): 1.06
 #&gt;   R-squared: 0.21
-#&gt;   Signal-to-noise ratio: 0.22
-#&gt;   Prediction error: 0.266</div></pre>
+#&gt;   Signal-to-noise ratio: 0.26
+#&gt;   Prediction error: 0.281</div><div class='input'>
+<span class='co'># Cox regression -----------------------------------------------------</span>
+<span class='fu'>data</span>(<span class='no'>Lung</span>)
+<span class='no'>cvfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cv-ncvreg.html'>cv.ncvsurv</a></span>(<span class='no'>Lung</span>$<span class='no'>X</span>, <span class='no'>Lung</span>$<span class='no'>y</span>)
+<span class='fu'>summary</span>(<span class='no'>cvfit</span>)</div><div class='output co'>#&gt; MCP-penalized Cox regression with n=137, p=8
+#&gt; At minimum cross-validation error (lambda=0.1368):
+#&gt; -------------------------------------------------
+#&gt;   Nonzero coefficients: 3
+#&gt;   Cross-validation error (deviance): 7.66
+#&gt;   R-squared: 0.21
+#&gt;   Signal-to-noise ratio: 0.26</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -234,7 +247,7 @@
     </ul>
 
     <h2>Author</h2>
-    Patrick Breheny &lt;patrick-breheny@uiowa.edu&gt;
+    Patrick Breheny
   </div>
 </div>
 
