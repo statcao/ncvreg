@@ -203,8 +203,8 @@
     </tr>
     <tr>
       <th>max.iter</th>
-      <td><p>Maximum number of iterations (total across entire path).
-    Default is 10000.</p></td>
+      <td><p>Maximum number of iterations (total across entire
+    path). Default is 10000.</p></td>
     </tr>
     <tr>
       <th>convex</th>
@@ -258,8 +258,9 @@
   objective function is defined to be
   $$Q(\beta|X, y) = \frac{1}{n} L(\beta|X, y) +
     P_\lambda(\beta)$$
-  where the loss function L is -2 times the log likelihood for the
-  specified outcome distribution (gaussian/binomial/poisson).
+  where the loss function L is the deviance (-2 times the log
+  likelihood) for the specified outcome distribution
+  (gaussian/binomial/poisson).
   <a href='http://pbreheny.github.io/ncvreg/articles/web/models.html'>See
     here for more details</a>.</p>  
 <p>This algorithm is stable, very efficient, and generally converges
@@ -283,12 +284,12 @@
     <dt>alpha</dt><dd><p>Same as above.</p></dd>
     <dt>convex.min</dt><dd><p>The last index for which the objective function is
       locally convex.  The smallest value of lambda for which the
-      objective function is convex is therefore <code>lambda[convex.min]</code>,
-      with corresponding coefficients <code>beta[,convex.min]</code>.</p></dd>
-    <dt>loss</dt><dd><p>A vector containing either the residual sum of squares
-      (<code>"gaussian"</code>) or negative log-likelihood (<code>"binomial"</code>
-      and <code>"poisson"</code>) of the fitted model at each value of
-      <code>lambda</code>.</p></dd>
+      objective function is convex is therefore
+      <code>lambda[convex.min]</code>, with corresponding coefficients
+      <code>beta[,convex.min]</code>.</p></dd> 
+    <dt>loss</dt><dd><p>A vector containing the deviance (i.e., the loss) at
+      each value of <code>lambda</code>.  Note that for <code>gaussian</code>
+      models, the loss is simply the residual sum of squares.</p></dd>
     <dt>penalty.factor</dt><dd><p>Same as above.</p></dd>
     <dt>n</dt><dd><p>Sample size.</p></dd>
   </dl>

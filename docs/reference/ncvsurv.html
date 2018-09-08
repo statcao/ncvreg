@@ -152,10 +152,10 @@
     <tr>
       <th>y</th>
       <td><p>The time-to-event outcome, as a two-column matrix or
-    <code>Surv</code> object.  The first column should be time on study (follow
-    up time); the second column should be a binary variable with 1
-    indicating that the event has occurred and 0 indicating (right)
-    censoring.</p></td>
+    <code><a href='http://www.rdocumentation.org/packages/survival/topics/Surv'>Surv</a></code> object.  The first column should be time
+      on study (follow up time); the second column should be a binary
+      variable with 1 indicating that the event has occurred and 0
+      indicating (right) censoring.</p></td>
     </tr>
     <tr>
       <th>penalty</th>
@@ -200,8 +200,8 @@
     </tr>
     <tr>
       <th>max.iter</th>
-      <td><p>Maximum number of iterations (total across entire path).
-    Default is 1000.</p></td>
+      <td><p>Maximum number of iterations (total across entire
+    path). Default is 1000.</p></td>
     </tr>
     <tr>
       <th>convex</th>
@@ -255,8 +255,8 @@
   objective function is defined to be
   $$Q(\beta|X, y) = \frac{1}{n} L(\beta|X, y) +
     P_\lambda(\beta)$$
-  where the loss function L is the -2 times the partial log-likelihood
-  from the Cox regression model.
+  where the loss function L is the deviance (-2 times the partial
+  log-likelihood) from the Cox regression mode.
   <a href='http://pbreheny.github.io/ncvreg/articles/web/models.html'>See
     here for more details</a>.</p>
 <p>Presently, ties are not handled by <code>ncvsurv</code> in a particularly
@@ -266,9 +266,9 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object with S3 class <code>"ncvsurv"</code> containing:</p><dl class='dl-horizontal'>
-    <dt>beta</dt><dd><p>The fitted matrix of coefficients.  The number of rows is
-      equal to the number of coefficients, and the number of columns is
-      equal to <code>nlambda</code>.</p></dd>
+    <dt>beta</dt><dd><p>The fitted matrix of coefficients.  The number of rows
+      is equal to the number of coefficients, and the number of columns
+      is equal to <code>nlambda</code>.</p></dd>
     <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number
       of iterations until convergence at each value of <code>lambda</code>.</p></dd>
     <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the
@@ -279,10 +279,11 @@
     <dt>alpha</dt><dd><p>Same as above.</p></dd>
     <dt>convex.min</dt><dd><p>The last index for which the objective function is
       locally convex.  The smallest value of lambda for which the
-      objective function is convex is therefore <code>lambda[convex.min]</code>,
-      with corresponding coefficients <code>beta[,convex.min]</code>.</p></dd>
-    <dt>loss</dt><dd><p>The negative partial log-likelihood of the fitted model at
-      each value of <code>lambda</code>.</p></dd>
+      objective function is convex is therefore
+      <code>lambda[convex.min]</code>, with corresponding coefficients
+      <code>beta[,convex.min]</code>.</p></dd>
+    <dt>loss</dt><dd><p>The deviance of the fitted model at each value of
+      <code>lambda</code>.</p></dd>
     <dt>penalty.factor</dt><dd><p>Same as above.</p></dd>
     <dt>n</dt><dd><p>The number of observations.</p></dd>
   </dl>
